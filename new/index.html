@@ -70,8 +70,7 @@
     
   </style>
  <?php
-    // 确保PHP文件的编码为UTF-8
-        header('Content-Type: text/html; charset=utf-8');
+   
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 获取POST提交的内容，并去除其中的换行符
     $content = str_replace(array("\r\n", "\r", "\n"), '', $_POST['content']);
