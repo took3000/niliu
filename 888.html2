@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lazy Load Text Example</title>
+<style>
+.lazy-load-container {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-top: 500px; /* Adjust this value to position the container */
+}
+</style>
+</head>
+<body>
+
+<div class="lazy-load-container" data-src="http://ni.bizihu.com/quotesWithAuthorsAndDates2.txt">
+  Loading text content...
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyLoadContainer = document.querySelector(".lazy-load-container");
+
+  var observer = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var container = entry.target;
+        var src = container.getAttribute("data-src");
+
+        // Fetch the text file content
+        fetch(src)
+          .then(function(response) {
+            return response.text();
+          })
+          .then(function(text) {
+            container.innerHTML = text;
+            container.style.display = "block";
+            observer.unobserve(container);
+          })
+          .catch(function(error) {
+            console.error('Error loading the text file:', error);
+            container.innerHTML = "Failed to load content.";
+          });
+      }
+    });
+  }, {
+    rootMargin: '0px',
+    threshold: 0.1
+  });
+
+  observer.observe(lazyLoadContainer);
+});
+</script>
+
+</body>
+</html>
